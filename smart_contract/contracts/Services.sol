@@ -52,8 +52,6 @@ contract Services{
         _;
     }
 
-    
-
     function registerService(string memory name, uint16 amount, string memory service, uint8 age, uint8 fee) 
     validRegistration(amount, age)
     onlyOnce(msg.sender)

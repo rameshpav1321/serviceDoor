@@ -3,6 +3,7 @@ import { ServiceContext } from "../context/ServiceContext";
 import useFetch from "../hooks/useFetch";
 import dummyData from "../utils/dummyData";
 import { shortenAddress } from "../utils/shortenAddress";
+import { Modal } from "./Review";
 
 const TransactionCard = ({
     name,
