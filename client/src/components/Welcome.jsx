@@ -3,8 +3,6 @@ import { AiFillPlayCircle } from "react-icons/ai";
 import { SiE, SiEthereum } from "react-icons/si";
 import { BsInfoCircle } from "react-icons/bs";
 import { Loader } from "./";
-
-import { TransactionContext } from "../context/TransactionContext";
 import { shortenAddress } from "../utils/shortenAddress";
 import { ServiceContext } from "../context/ServiceContext";
 

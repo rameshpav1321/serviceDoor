@@ -5,4 +5,4 @@ import abi from './Services.json';
 export const contractABI = abi.abi;
 
 //address where contract is deployed
-export const contractAddress = '0xa387e3caabDe6802c43e6099de431D8b56fc2ECf';
+export const contractAddress = '0xCD54279B31881AAf762cF2E7861dF83980f69969';

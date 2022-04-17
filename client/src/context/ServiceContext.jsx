@@ -39,6 +39,9 @@ export const ServiceProvider = ({ children }) => {
         deposit:'',
     });
 
+    const [rating, setRating] = useState(0);
+
+
     const [isLoading, setIsLoading] = useState(false);
 
     const [transactionCount, setTransactionCount] = useState(localStorage.getItem('transactionCount'));
@@ -55,6 +58,10 @@ export const ServiceProvider = ({ children }) => {
         console.log("Set form data: ",formData);
     };
 
+    const handleRating = (e) => {
+        setRating(e.target.value);
+    }
+
     const registerService = async(name, deposit, serviceName, age, serviceFee) => {
         console.log("called register")
         try {
@@ -65,7 +72,8 @@ export const ServiceProvider = ({ children }) => {
             //make sure wallet is connected (future)
 
             //call register service form contract
-            const status = await serviceContract.registerService(name, deposit, serviceName, age, serviceFee);
+            const status = await serviceContract.registerService(
+                name, deposit, serviceName, age, serviceFee);
 
             status.wait();
 
@@ -76,7 +84,7 @@ export const ServiceProvider = ({ children }) => {
 
         } catch (error) {
             console.log(error);
-            alert("Account of same address already exists");
+            alert("Registration failed");
             throw new Error("SMART CONTRACT, registration failed");
         }
     }
@@ -85,8 +93,10 @@ export const ServiceProvider = ({ children }) => {
             if(!ethereum) return alert("Please install metamask");
             const serviceContract = getEthereumContract();
             
+            console.log("calling get all services", serviceContract);
             const availableServices = await serviceContract.getAllServices();
 
+            console.log(availableServices)
             const structuredServices = availableServices.map((service) => ({
                 name: service.name,
                 deposit: service.deposit,
@@ -131,13 +141,14 @@ export const ServiceProvider = ({ children }) => {
     const checkIfTransactionsExist = async () => {
         try {
             const transactionContract = getEthereumContract();
+            console.log("calling transactions count", transactionContract);
             const transactionCount = await transactionContract.getTransactionCount();
-            
+            console.log("transactions count");
             window.localStorage.setItem("transactionCount", transactionCount);
 
         } catch (error) {
             console.log(error);
-            throw new Error("No ethereum object.");
+            // throw new Error("No ethereum object.");
         }
     }
 
@@ -187,10 +198,10 @@ export const ServiceProvider = ({ children }) => {
             const transactionContract = getEthereumContract();
 
             //converting in ethers i.e. wei hexadecimal 
-            console.log("parsing now")
+            // console.log("parsing now")
             const parsedAmount = ethers.utils.parseEther(amount);
 
-            console.log("ethereum call")
+            // console.log("ethereum call")
             await ethereum.request({
                 method: "eth_sendTransaction",
                 params: [
@@ -245,7 +256,9 @@ export const ServiceProvider = ({ children }) => {
                 sendTransaction,
                 services,
                 registerService,
-                transactions
+                transactions,
+                handleRating,
+                rating
             }}
         >
             {children}

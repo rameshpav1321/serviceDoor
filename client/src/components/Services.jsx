@@ -1,30 +1,36 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { ServiceContext } from "../context/ServiceContext";
 import useFetch from "../hooks/useFetch";
 import dummyData from "../utils/dummyData";
 import { shortenAddress } from "../utils/shortenAddress";
-import { Modal } from "./Review";
+import Modal from "./Review";
 
 const TransactionCard = ({
     name,
     age,
     serviceName,
     serviceFee,
-    address
+    address,
 }) => {
-    const {
-        sendTransaction
-    } = useContext(ServiceContext);
+    const { sendTransaction, rating } = useContext(ServiceContext);
 
     const gifUrl = useFetch({ serviceName });
 
-    const handleSubmit = (e) => {
-        console.log(name,typeof address, typeof serviceFee);
+    const handleSubmit = (rating) => {
+        // console.log(name,typeof address, typeof serviceFee);
+        // e.preventDefault();
+        if(rating){
 
-        sendTransaction(address, String(serviceFee), "Good service", serviceName);
-
+            console.log("Rating is: ", rating);
+            sendTransaction(address, String(serviceFee), rating, serviceName);
+        }else{
+            alert("Please rate the provider to proceed")
+        }
     };
 
+    const [openModal, setOpenModal] = useState(false);
+
+    
     return (
         <div className="bg-[#181918] m-4 flex flex-1 
             2xl:min-w-[450px] 2xl:max-w[500px] 
@@ -44,6 +50,7 @@ const TransactionCard = ({
                     <p className="text-white text-base">Age: {age}</p>
                     <p className="text-white text-base">Service Offered: {serviceName}</p>
                     <p className="text-white text-base">Service Fee: {serviceFee} ETH</p>
+                    {/* {rating && <p className="text-white text-base">Rating: {rating}</p>} */}
                     {/* <a href={`https://ropsten.etherscan.io/address/${addressFrom}`} target="_blank" rel="nonreferre">
                         <p className="text-white text-base">Address:{shortenAddress(addressFrom)}</p>
                     </a> */}
@@ -60,14 +67,16 @@ const TransactionCard = ({
                         {false ? (
                             <Loader />
                         ) : (
-                            <button
+                            
+                            !openModal && <button
                                 type="button"
-                                onClick={handleSubmit}
+                                onClick={()=>setOpenModal(true)}
                                 className="bg-[#2952e3] text-white w-full mt-2 p-2 hover:bg-[#2546bd] rounded-full cursor-pointer"
                             >
                                 Book
                             </button>
                         )}
+                        {  openModal && <Modal closeModal={setOpenModal} handlePay={handleSubmit} /> }
                     
                 </div>
                
