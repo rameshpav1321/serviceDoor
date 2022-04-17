@@ -6,7 +6,7 @@ contract Services{
     address chairPerson;
     uint120 minDeposit;
     uint8 minAge;
-    uint256 transactionCount;
+    uint256 transactionCount=0;
 
     struct ProviderStruct{
         string name;
@@ -16,6 +16,8 @@ contract Services{
         uint8 serviceFee;
         bool status;
         address serviceFrom;
+        // uint8 rating;
+        // uint8 ratingCount;
     }
 
      struct TransferStruct{
@@ -25,6 +27,7 @@ contract Services{
         string message;
         uint256 timestamp;
         string keyword;
+      
     }
 
     //array of struct
@@ -52,11 +55,13 @@ contract Services{
         _;
     }
 
+
+    //to register a particular service
     function registerService(string memory name, uint16 amount, string memory service, uint8 age, uint8 fee) 
     validRegistration(amount, age)
     onlyOnce(msg.sender)
      public returns(bool){
-
+        //set the values
         address provider = msg.sender;
         services[provider].name = name;
         services[provider].deposit = amount;
@@ -71,13 +76,22 @@ contract Services{
         return true;
     }
 
+
     function pay(uint amount, address payable receiver, string memory message, string memory keyword) public{
         //send ether to other account
         transactionCount++; 
         transactions.push(TransferStruct(msg.sender, receiver, amount, message, block.timestamp, keyword));
 
+        //call updateRatings
+        // updateRatings(receiver, rating);
         emit Transfer(msg.sender, receiver, amount, message, block.timestamp, keyword);
     }
+
+    // function updateRatings (address receiver, uint8 rating) internal{
+    //     //calculate the average rating before updating
+    //     uint8 avgRating = (services[receiver].rating + rating) / services[receiver].ratingCount;
+    //     services[receiver].rating = avgRating;
+    // }
 
     // get all the transactions to render on fron-end
     function getAllTransactions() public view returns(TransferStruct[] memory){

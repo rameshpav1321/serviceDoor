@@ -4,7 +4,7 @@ const main = async() => {
   const Services = await hre.ethers.getContractFactory("Services");
 
   //running the constructor
-  const services = await Services.deploy(100, 18);
+  const services = await Services.deploy(10, 18);
 
   await services.deployed();
 
