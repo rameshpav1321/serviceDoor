@@ -13,6 +13,7 @@ const { ethereum } = window;
 const getEthereumContract = () => {
     const provider = new ethers.providers.Web3Provider(ethereum);
     const signer = provider.getSigner();
+    
     //get the contract
     const serviceContract = new ethers.Contract(
         contractAddress,
@@ -83,9 +84,9 @@ export const ServiceProvider = ({ children }) => {
 
 
         } catch (error) {
-            console.log(error);
+      
             alert("Registration failed");
-            throw new Error("SMART CONTRACT, registration failed");
+            throw new Error("SMART CONTRACT, registration failed", error);
         }
     }
     const getAllServices = async () => {
@@ -93,10 +94,8 @@ export const ServiceProvider = ({ children }) => {
             if(!ethereum) return alert("Please install metamask");
             const serviceContract = getEthereumContract();
             
-            console.log("calling get all services", serviceContract);
             const availableServices = await serviceContract.getAllServices();
 
-            console.log(availableServices)
             const structuredServices = availableServices.map((service) => ({
                 name: service.name,
                 deposit: service.deposit,
@@ -120,7 +119,6 @@ export const ServiceProvider = ({ children }) => {
             const transactionContract = getEthereumContract();
             const availableTransactions = await transactionContract.getAllTransactions();
 
-            console.log("Transactions: ",availableTransactions);
             const structuredTransactions = availableTransactions.map((transaction, index) => ({
                 addressTo: transaction.receiver,
                 addressFrom: transaction.sender,
@@ -131,7 +129,6 @@ export const ServiceProvider = ({ children }) => {
             }));
 
             setTransactions(structuredTransactions);
-            console.log(structuredTransactions);
 
         } catch (error) {
              console.log("Failed to get all transactions",error);
@@ -214,7 +211,6 @@ export const ServiceProvider = ({ children }) => {
                 ],
             });
 
-            console.log("sending to contract")
             //add to blockchain, store the transaction
             const transactionHash = await transactionContract.pay(parsedAmount, addressTo, message, keyword);
             setIsLoading(true);

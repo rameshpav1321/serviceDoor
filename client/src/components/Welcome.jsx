@@ -1,9 +1,7 @@
 import React, { useContext } from "react";
-import { AiFillPlayCircle } from "react-icons/ai";
-import { SiE, SiEthereum } from "react-icons/si";
+import {SiEthereum } from "react-icons/si";
 import { BsInfoCircle } from "react-icons/bs";
 import { Loader } from "./";
-import { shortenAddress } from "../utils/shortenAddress";
 import { ServiceContext } from "../context/ServiceContext";
 
 const commonStyles =
@@ -25,17 +23,13 @@ const Welcome = () => {
         connectWallet,
         currentAccount,
         formData,
-        setFormData,
         handleChange,
-        sendTransaction,
-        services,
         registerService,
     } = useContext(ServiceContext);
 
     const { name, age, serviceName, serviceFee, deposit } = formData;
 
     const handleSubmit = (e) => {
-        // const { name, age, serviceName, serviceFee, deposit } = formData;
 
         e.preventDefault();
 
@@ -107,9 +101,6 @@ const Welcome = () => {
                                 <p className="text-white font-light text-sm mt-1">
                                     {serviceName}
                                 </p>
-                                <p className="text-white font-light text-sm mt-1">
-                                    {shortenAddress(currentAccount)}
-                                </p>
                             </div>
                         </div>
                     </div>
@@ -160,37 +151,6 @@ const Welcome = () => {
                     </div>
                 </div>
             </div>
-
-            {/* <div className="grid grid-cols-4 gap-2">
-                {services.map((item, index) => (
-                    <div
-                        key={index}
-                        className="mb-2 p-6  w-full items-center blue-glassmorphism"
-                    >
-                        <div className="justify-center items-center">
-                            <p className="text-white">
-                                Service Type: {item.serviceName}
-                            </p>
-                            <p className="text-white">
-                                Service Fee: {item.serviceFee}
-                            </p>
-                            <p className="text-white">
-                                Address: {item.address}
-                            </p>
-                            <p className="text-white">Age: {item.age}</p>
-
-                            <button
-                                type="button"
-                                className="flex w-52 justify-center items-center my-5 bg-[#2952e3] p-3 rounded-full cursor-pointer hover:bg-[#2546bd]"
-                            >
-                                <p className="text-white text-base font-semibold">
-                                    Book
-                                </p>
-                            </button>
-                        </div>
-                    </div>
-                ))}
-            </div> */}
         </div>
     );
 };

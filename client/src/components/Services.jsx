@@ -1,24 +1,16 @@
 import React, { useContext, useState } from "react";
 import { ServiceContext } from "../context/ServiceContext";
-import useFetch from "../hooks/useFetch";
-import dummyData from "../utils/dummyData";
-import { shortenAddress } from "../utils/shortenAddress";
 import Modal from "./Review";
 
-const TransactionCard = ({
+const ServiceCard = ({
     name,
     age,
     serviceName,
     serviceFee,
     address,
 }) => {
-    const { sendTransaction, rating } = useContext(ServiceContext);
-
-    const gifUrl = useFetch({ serviceName });
-
+    const { sendTransaction} = useContext(ServiceContext);
     const handleSubmit = (rating) => {
-        // console.log(name,typeof address, typeof serviceFee);
-        // e.preventDefault();
         if(rating){
 
             console.log("Rating is: ", rating);
@@ -39,29 +31,11 @@ const TransactionCard = ({
             hover:shadow-2xl">
             <div className="flex flex-col items-center w-full mt-3">
                 <div className="w-full mb-6 p-2">
-                <img src={gifUrl}
-                        alt="gif"
-                        className="w-full h-64 2xl:h-96 rounded-md shadow-lg object-cover"
-                    />
-                    <div className="bg-black p-3 px-5 w-max rounded-3xl -mt-5 shadow-2xl">
-                        {/* <p className="text-[#37c7da] font-bold">{timestamp}</p> */}
-                    </div>
+                
                     <p className="text-white text-base">Name: {name}</p>
                     <p className="text-white text-base">Age: {age}</p>
                     <p className="text-white text-base">Service Offered: {serviceName}</p>
                     <p className="text-white text-base">Service Fee: {serviceFee} ETH</p>
-                    {/* {rating && <p className="text-white text-base">Rating: {rating}</p>} */}
-                    {/* <a href={`https://ropsten.etherscan.io/address/${addressFrom}`} target="_blank" rel="nonreferre">
-                        <p className="text-white text-base">Address:{shortenAddress(addressFrom)}</p>
-                    </a> */}
-                    {/* {message && (
-                        <>
-                            <br />
-                            <p className="text-white text-base">Message: {message}</p>
-                        </>
-
-                        
-                    )} */}
 
                     <div className="h-[1px] w-full bg-gray-400 my-2" />
                         {false ? (
@@ -85,11 +59,9 @@ const TransactionCard = ({
         </div>
     );
 };
-const Transactions = () => {
+const Services = () => {
     const { currentAccount, services } = useContext(ServiceContext);
 
-    // const registeredServices = getAllServices();
-    console.log('fetched: ', services);
     return (
         <div className="flex w-full justify-center items-center 2xl:px-20 gradient-bg-services">
             <div className="flex flex-col md:p-12 py-12 px-4">
@@ -105,7 +77,7 @@ const Transactions = () => {
 
                 <div className="flex flex-wrap justify-center items-center mt-10">
                     {services.map((transaction, index) => (
-                        <TransactionCard key={index} {...transaction} />
+                        <ServiceCard key={index} {...transaction} />
                     ))}
                 </div>
             </div>
@@ -113,4 +85,4 @@ const Transactions = () => {
     );
 };
 
-export default Transactions;
+export default Services;
