@@ -1,4 +1,4 @@
-# service-door - A blockchain application
+# Service Door - A blockchain application
 
 An open source blockchain project, it is an marketplace of services. An attempt to decentralized the idenity management and transactions in the marketplace
 environment. With the help of etherium blockhain, ERC-20 tokens and smart contracts this project currently has the capability to create an account with
